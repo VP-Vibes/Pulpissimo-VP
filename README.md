@@ -42,7 +42,14 @@ Initially this is forked from TGC-VP project in VP-Vibes.
   
   ```
 
-  cd TGC-VP
+  cd Pulpissimo-VP
+  
+  # currently the recent commits are not compiling for `dbt-rise-core` hence 
+  # reverting to last known working commit
+  cd tgc-iss/dbt-rise-core/
+  git reset --hard 44acf8a
+  cd ../../
+  
   mkdir build
   cd build
   cmake -DCMAKE_BUILD_TYPE=Release ..
