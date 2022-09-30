@@ -1,0 +1,72 @@
+# Pulpissimo-VP
+This repo is meant to provide a VP solution for the Pulpissimo chip to quickly develop &amp; test SW.
+Initially this is forked from TGC-VP project in VP-Vibes.
+
+## Quick start
+
+* you need to have a C++14 capable compiler, make, python, and cmake installed
+
+* install conan.io (see also http://docs.conan.io/en/latest/installation.html):
+  
+  ```
+
+  pip3 install --user conan
+
+  ```
+  
+  It is advised to use conan version 1.36 or newer. In case of an older version please run
+  
+  ```sh
+
+  pip3 install --user --upgrade conan
+
+  ``` 
+  
+  Installing conan for the first time you need to create a profile:
+  
+  ```
+  
+  conan profile create default --detect
+  
+  ```
+  
+* checkout source from git
+
+  ```sh
+
+  git clone --recursive https://github.com/VP-Vibes/Pulpissimo-VP
+
+  ``` 
+
+* start an out-of-source build:
+  
+  ```
+
+  cd TGC-VP
+  mkdir build
+  cd build
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+  make -j tgc-vp
+
+  ```
+  
+* run the VP with pre-built firmware
+
+  ```
+
+  ctest
+
+  ```
+
+  or
+
+  ```
+
+  src/tgc-vp -f ../fw/hello-world/prebuilt/hello.elf 
+
+  ```
+  
+To rebuild the firmware you need to install a RISC-V toolchain like https://github.com/riscv/riscv-tools.
+
+# Windows/Visual Studio build
+TODO
