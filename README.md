@@ -42,14 +42,7 @@ Initially this is forked from TGC-VP project in VP-Vibes.
   
   ```
 
-  cd Pulpissimo-VP
-  
-  # currently the recent commits are not compiling for `dbt-rise-core` hence 
-  # reverting to last known working commit
-  cd tgc-iss/dbt-rise-core/
-  git reset --hard 44acf8a
-  cd ../../
-  
+  cd Pulpissimo-VP/
   mkdir build
   cd build
   cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -77,3 +70,9 @@ To rebuild the firmware you need to install a RISC-V toolchain like https://gith
 
 # Windows/Visual Studio build
 TODO
+
+# TODO
+- [ ] clean up TGC-VP stuff (models, target-SW)
+- [ ] SPI-M model in UDMA subsystem
+- [ ] I2S model in UDMA subsystem
+- [ ] use VPVibes::vpvper as submodule
