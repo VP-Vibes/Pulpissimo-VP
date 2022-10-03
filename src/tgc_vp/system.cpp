@@ -13,7 +13,7 @@ using namespace sysc::tgfs;
 
 system::system(sc_core::sc_module_name nm)
 : sc_core::sc_module(nm)
-, NAMED(router,  platfrom_mmap.size() + 2, 1)
+, NAMED(router,  platfrom_mmap.size() + 2 + 1, 1)
 , NAMEDC(qspi0_ptr, spi, spi_impl::beh)
 , NAMEDC(qspi1_ptr, spi, spi_impl::beh)
 , NAMEDC(qspi2_ptr, spi, spi_impl::beh)
@@ -36,6 +36,12 @@ system::system(sc_core::sc_module_name nm)
     router.initiator.at(++i)(mem_ram.target);
     router.set_target_range(i, 0x80000000, 128_kB);
 
+//    router.initiator.at(++i)(dummy_.socket);
+//    router.set_target_range(i, 0x3000000, 16);
+
+    router.initiator.at(++i)(udma.socket);
+    router.set_target_range(i, 0x1A102000, 8_kB);
+
     uart1.clk_i(tlclk_s);
     qspi0.clk_i(tlclk_s);
     qspi1.clk_i(tlclk_s);
@@ -52,6 +58,8 @@ system::system(sc_core::sc_module_name nm)
     clint.lfclk_i(lfclk_s);
     core_complex.clk_i(tlclk_s);
 
+    udma.clk_i(tlclk_s);
+
     uart0.rst_i(rst_s);
     uart1.rst_i(rst_s);
     qspi0.rst_i(rst_s);
@@ -66,6 +74,8 @@ system::system(sc_core::sc_module_name nm)
     prci.rst_i(rst_s);
     clint.rst_i(rst_s);
     core_complex.rst_i(rst_s);
+
+    udma.rst_i(rst_s);
 
     aon.erst_n_i(erst_n);
 

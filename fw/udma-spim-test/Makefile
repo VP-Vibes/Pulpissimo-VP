@@ -1,5 +1,5 @@
 
-TARGET  = hello
+TARGET  = spim-test-regs
 C_SRCS  = $(wildcard *.c) 
 HEADERS = $(wildcard *.h)
 CFLAGS += -O0 -g 

@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+// TODO: remove legacy TGC-VP stuff
+
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
@@ -25,6 +27,32 @@
 #include <array>
 #include <memory>
 #include <sysc/kernel/sc_module.h>
+
+#include "pulpissimo/udma.h"
+
+//#include "scc/tlm_target.h"
+//#include "sifive/gen/uart_regs.h"
+//class Dummy : public sc_core::sc_module, public scc::tlm_target<> {
+//  public:
+//    Dummy() : sc_core::sc_module(sc_core::sc_module_name{"Dummy"}),
+//              scc::tlm_target<>(clk),
+//              NAMEDD(regs, vpvper::sifive::uart_regs) {
+//       regs->registerResources(*this);
+//       regs->txdata.set_write_cb([this](scc::sc_register<uint32_t> &reg,
+//                                         uint32_t data,
+//                                         sc_core::sc_time d) -> bool {
+//         std::cout << "DUMMY: hello world\n";
+//         return true;
+//       });
+//    }
+//
+//    virtual ~Dummy() override {}
+//
+//  protected:
+//    sc_core::sc_time clk{sc_core::SC_ZERO_TIME};
+//    std::unique_ptr<vpvper::sifive::uart_regs> regs{};
+//};
+
 
 namespace tgc_vp {
 
@@ -51,6 +79,9 @@ private:
     vpvper::sifive::aon aon{"aon"};
     vpvper::sifive::prci prci{"prci"};
     vpvper::sifive::clint clint{"clint"};
+
+  //  Dummy dummy_{};
+    vpvper::pulpissimo::udma udma{"udma"};
 
     using mem_qspi_t = scc::memory<512_MB, 32>;
     mem_qspi_t mem_qspi{"mem_qspi"};
