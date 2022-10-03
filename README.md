@@ -14,7 +14,7 @@ Initially this is forked from TGC-VP project in VP-Vibes.
 
   ```
   
-  It is advised to use conan version 1.36 or newer. In case of an older version please run
+  It is advised to use conan version 1.5x or newer. In case of an older version please run
   
   ```sh
 
