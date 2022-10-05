@@ -10,3 +10,6 @@
 [submodule "vpvper"]
 	path = vpvper
 	url = git@github.com:uzleosharif/VPV-Peripherals.git
+[submodule "doc/pulpissimo-model-notes"]
+	path = doc/pulpissimo-model-notes
+	url = https://github.com/uzleosharif/pulpissimo-model-notes
