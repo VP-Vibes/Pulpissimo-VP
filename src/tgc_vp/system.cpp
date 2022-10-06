@@ -11,45 +11,43 @@ using namespace sc_core;
 using namespace vpvper::sifive;
 using namespace sysc::tgfs;
 
-system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(router, platfrom_mmap.size() + 2 + 1, 1) {
+system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(router, 6, 1) {
+  SC_METHOD(resetCb);
+  sensitive << erst_n;
+
   core_complex.initiator(router.target[0]);
+
   size_t i = 0;
-  for (const auto& e : platfrom_mmap) {
-    router.initiator.at(i)(e.target);
-    router.set_target_range(i, e.start, e.size);
-    i++;
-  }
-  router.initiator.at(i)(mem_qspi.target);
+  router.initiator.at(i)(plic.socket);
+  router.set_target_range(i, 0xc000000, 0x200008);
+
+  router.initiator.at(++i)(prci.socket);
+  router.set_target_range(i, 0x10008000, 0x14);
+
+  router.initiator.at(++i)(boot_rom.target);
   router.set_target_range(i, 0x20000000, 512_MB);
-  router.initiator.at(++i)(mem_ram.target);
-  router.set_target_range(i, 0x80000000, 128_kB);
+
+  router.initiator.at(++i)(l2_mem.target);
+  router.set_target_range(i, 0x1c000000, 512_kB);
 
   router.initiator.at(++i)(udma.socket);
   router.set_target_range(i, 0x1A102000, 8_kB);
 
+  router.initiator.at(++i)(uart0.socket);
+  router.set_target_range(i, 0x10013000, 0x1c);
+
   plic.clk_i(tlclk_s);
-  aon.clk_i(tlclk_s);
-  aon.lfclkc_o(lfclk_s);
   prci.hfclk_o(tlclk_s);  // clock driver
-  clint.tlclk_i(tlclk_s);
-  clint.lfclk_i(lfclk_s);
   core_complex.clk_i(tlclk_s);
 
   udma.clk_i(tlclk_s);
 
   uart0.rst_i(rst_s);
   plic.rst_i(rst_s);
-  aon.rst_o(rst_s);
   prci.rst_i(rst_s);
-  clint.rst_i(rst_s);
   core_complex.rst_i(rst_s);
 
   udma.rst_i(rst_s);
-
-  aon.erst_n_i(erst_n);
-
-  clint.mtime_int_o(mtime_int_s);
-  clint.msip_int_o(msie_int_s);
 
   plic.global_interrupts_i(global_int_s);
   plic.core_interrupt_o(core_int_s);
@@ -60,6 +58,14 @@ system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(route
   core_complex.local_irq_i(local_int_s);
 
   uart0.irq_o(global_int_s[3]);
+}
+
+void system::resetCb() {
+  if (!erst_n.read()) {
+    rst_s = true;
+  } else {
+    rst_s = false;
+  }
 }
 
 }  // namespace tgc_vp
