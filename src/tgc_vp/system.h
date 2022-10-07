@@ -38,8 +38,6 @@ class system : public sc_core::sc_module {
 
  public:
   sc_core::sc_in<bool> erst_n{"erst_n"};
-  // TODO: uart0 is kept for debugging in dev for now. Later remove this
-  vpvper::sifive::uart_terminal uart0{"dbg-uart"};
 
   system(sc_core::sc_module_name nm);
 
@@ -55,10 +53,9 @@ class system : public sc_core::sc_module {
 
   sysc::tgfs::core_complex core_complex{"core_complex"};
   scc::router<> router;
-  scc::memory<512_MB, 32> boot_rom{"boot_rom"};
+  scc::memory<8_kB, 32> boot_rom{"boot_rom"};
   scc::memory<512_kB, 32> l2_mem{"l2_mem"};
   vpvper::pulpissimo::udma udma{"udma"};
-
   // TODO: later make this event&interrupt controller
   vpvper::sifive::plic plic{"plic"};
   // TODO: later make this FLL

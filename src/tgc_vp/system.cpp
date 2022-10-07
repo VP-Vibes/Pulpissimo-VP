@@ -11,7 +11,7 @@ using namespace sc_core;
 using namespace vpvper::sifive;
 using namespace sysc::tgfs;
 
-system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(router, 6, 1) {
+system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(router, 5, 1) {
   SC_METHOD(resetCb);
   sensitive << erst_n;
 
@@ -25,7 +25,7 @@ system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(route
   router.set_target_range(i, 0x10008000, 0x14);
 
   router.initiator.at(++i)(boot_rom.target);
-  router.set_target_range(i, 0x20000000, 512_MB);
+  router.set_target_range(i, 0x1a000000, 8_kB);
 
   router.initiator.at(++i)(l2_mem.target);
   router.set_target_range(i, 0x1c000000, 512_kB);
@@ -33,16 +33,12 @@ system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(route
   router.initiator.at(++i)(udma.socket);
   router.set_target_range(i, 0x1A102000, 8_kB);
 
-  router.initiator.at(++i)(uart0.socket);
-  router.set_target_range(i, 0x10013000, 0x1c);
-
   plic.clk_i(tlclk_s);
   prci.hfclk_o(tlclk_s);  // clock driver
   core_complex.clk_i(tlclk_s);
 
   udma.clk_i(tlclk_s);
 
-  uart0.rst_i(rst_s);
   plic.rst_i(rst_s);
   prci.rst_i(rst_s);
   core_complex.rst_i(rst_s);
@@ -56,8 +52,6 @@ system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(route
   core_complex.timer_irq_i(mtime_int_s);
   core_complex.global_irq_i(core_int_s);
   core_complex.local_irq_i(local_int_s);
-
-  uart0.irq_o(global_int_s[3]);
 }
 
 void system::resetCb() {
