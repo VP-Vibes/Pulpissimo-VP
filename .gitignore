@@ -1,7 +1,11 @@
 **/build/
+**/obj/
+**/__pycache__/
+
 **/*.o
 **/*.a
 **/*.dis
 **/*.elf
 **/*.slm
 **/*.stim
+
