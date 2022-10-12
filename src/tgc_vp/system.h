@@ -28,10 +28,34 @@
 #include <array>
 #include <cci_configuration>
 #include <memory>
+//#include <util/sparse_array.h>
 
+#include "pulpissimo/interrupt.h"
+#include "pulpissimo/soc_ctrl.h"
+#include "pulpissimo/soc_event.h"
+#include "pulpissimo/timer.h"
 #include "pulpissimo/udma.h"
+#include "tlm_utils/simple_target_socket.h"
 
 namespace tgc_vp {
+
+class fakeMem : public sc_core::sc_module {
+ public:
+  tlm_utils::simple_target_socket<fakeMem> socket{};
+
+  fakeMem(scc::memory<512_kB, 32> *l2_mem_ptr)
+      : sc_core::sc_module{sc_core::sc_module_name{"l2-aliased-mem"}}, mem_{l2_mem_ptr} {
+    socket.register_b_transport(this, &fakeMem::b_transport);
+  }
+
+ private:
+  scc::memory<512_kB, 32> *mem_{nullptr};
+
+  void b_transport(tlm::tlm_generic_payload &gp, sc_core::sc_time &t) {
+    // handling request in L2
+    mem_->handle_operation(gp, t);
+  }
+};
 
 class system : public sc_core::sc_module {
   SC_HAS_PROCESS(system);
@@ -56,13 +80,19 @@ class system : public sc_core::sc_module {
   scc::memory<8_kB, 32> boot_rom{"boot_rom"};
   scc::memory<512_kB, 32> l2_mem{"l2_mem"};
   vpvper::pulpissimo::udma udma{"udma"};
-  // TODO: later make this event&interrupt controller
-  vpvper::sifive::plic plic{"plic"};
+  vpvper::pulpissimo::soc_ctrl soc_ctrl{"soc_control"};
+  vpvper::pulpissimo::interrupt eic{"eic"};
+  vpvper::pulpissimo::soc_event soc_event{"soc_event"};
+  vpvper::pulpissimo::timer timer{"timer"};
+
   // TODO: later make this FLL
   vpvper::sifive::prci prci{"prci"};
 
-  // TODO: Timer..for reference see vpvper::sifive::clint
-  // TODO: other peripherals
+  // there is a l2-aliased section in memory starting in SW from 0x0 worth 16kB
+  // i think the loader then puts this section at start of L2 memory
+  // as our VP loads up the memory module using info from elf so we fake
+  // a memory section in 0x0-0x3fff space that in effect just references the L2
+  fakeMem fake_mem{&l2_mem};
 
  protected:
   // this method is used to generate inverse reset signal from input reset, to be compatible with rest of SoC
