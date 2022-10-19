@@ -1,0 +1,3 @@
+- setup `PULP_SDK_HOME` and `RISCV`
+- mkdir -p build/obj
+- make
