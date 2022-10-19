@@ -79,7 +79,7 @@ class system : public sc_core::sc_module {
   scc::router<> router;
   scc::memory<8_kB, 32> boot_rom{"boot_rom"};
   scc::memory<512_kB, 32> l2_mem{"l2_mem"};
-  vpvper::pulpissimo::udma udma{"udma"};
+  vpvper::pulpissimo::udma udma{"udma", &l2_mem};
   vpvper::pulpissimo::soc_ctrl soc_ctrl{"soc_control"};
   vpvper::pulpissimo::interrupt eic{"eic"};
   vpvper::pulpissimo::soc_event soc_event{"soc_event"};
