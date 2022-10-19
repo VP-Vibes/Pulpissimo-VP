@@ -9,7 +9,7 @@
 	url = https://git.minres.com/DBT-RISE/DBT-RISE-TGC.git
 [submodule "vpvper"]
 	path = vpvper
-	url = git@github.com:uzleosharif/VPV-Peripherals.git
+	url = https://github.com/uzleosharif/VPV-Peripherals
 [submodule "doc/pulpissimo-model-notes"]
 	path = doc/pulpissimo-model-notes
 	url = https://github.com/uzleosharif/pulpissimo-model-notes
