@@ -1,4 +1,4 @@
 FROM pulpissimo-dep
 
-WORKDIR "/Pulpissimo-VP/build/"
-CMD ["make", "-j", "tgc-vp"]
+WORKDIR "/Pulpissimo-VP/"
+CMD ["/bin/sh/", "build-vp.sh"]
