@@ -11,4 +11,10 @@ WORKDIR /
 
 # cross-compiler for Pulpissimo SoC
 # gcc
-#RUN git clone --recursive https://github.com/pulp-platform/pulp-riscv-gnu-toolchain
+RUN git clone --recursive https://github.com/pulp-platform/pulp-riscv-gnu-toolchain
+RUN apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev
+
+WORKDIR /pulp-riscv-gnu-toolchain/
+RUN export PATH=$PATH:/opt/riscv/
+RUN ./configure --prefix=/opt/riscv/ --with-arch=rv32imc --with-cmodel=medlow 
+RUN make -j4
