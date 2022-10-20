@@ -1,4 +1,11 @@
 #!/bin/sh
 
-cd build
-make -j tgc-vp
+git pull
+mkdir -p build/
+cd build/
+if [ ! -f Makefile ]
+then
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+fi
+
+make -j4 tgc-vp
