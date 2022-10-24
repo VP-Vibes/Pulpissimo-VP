@@ -15,13 +15,13 @@
 #include "tgc_vp/system.h"
 namespace tgc_vp {
 
-class tb : public sc_core::sc_module {
+class VP : public sc_core::sc_module {
  public:
-  tgc_vp::system top{"top"};
+  tgc_vp::PulpissimoSoC pulpissimo_soc{"pulpissimo-soc"};
   tgc_vp::rst_gen rst_gen{"rst_gen"};
   sc_core::sc_signal<bool> rst_n{"rst_n"};
 
-  tb(sc_core::sc_module_name const& nm);
+  VP(sc_core::sc_module_name const& nm);
 };
 
 } /* namespace tgc_vp */
