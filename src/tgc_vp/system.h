@@ -6,38 +6,29 @@
 
 // TODO: remove legacy TGC-VP stuff
 
-#ifndef _PLATFORM_H_
-#define _PLATFORM_H_
-
-// TODO: remove unneeded headers
-
-#include <scc/memory.h>
-#include <scc/router.h>
-#include <scc/utilities.h>
-#include <sifive/aon.h>
-#include <sifive/clint.h>
-#include <sifive/gpio.h>
-#include <sifive/plic.h>
-#include <sifive/prci.h>
-#include <sifive/pwm.h>
-#include <sifive/spi.h>
-#include <sifive/uart.h>
-#include <sifive/uart_terminal.h>
-#include <sysc/core_complex.h>
-#include <sysc/kernel/sc_module.h>
-#include <tlm/scc/tlm_signal_sockets.h>
+#pragma once
 
 #include <array>
 #include <cci_configuration>
 #include <memory>
 // #include <util/sparse_array.h>
+//
+#include "tlm_utils/simple_initiator_socket.h"
+#include "tlm_utils/simple_target_socket.h"
+//
 
 #include "pulpissimo/interrupt.h"
 #include "pulpissimo/soc_ctrl.h"
 #include "pulpissimo/soc_event.h"
 #include "pulpissimo/timer.h"
 #include "pulpissimo/udma.h"
-#include "tlm_utils/simple_target_socket.h"
+#include "scc/memory.h"
+#include "scc/router.h"
+#include "scc/utilities.h"
+#include "sifive/prci.h"
+#include "sysc/core_complex.h"
+#include "sysc/kernel/sc_module.h"
+#include "tlm/scc/tlm_signal_sockets.h"
 
 namespace tgc_vp {
 
@@ -59,7 +50,7 @@ class fakeMem : public sc_core::sc_module {
   }
 };
 
-class PulpissimoSoC : public sc_core::sc_module {
+class PulpissimoSoC final : public sc_core::sc_module {
   SC_HAS_PROCESS(PulpissimoSoC);
 
  public:
@@ -76,6 +67,7 @@ class PulpissimoSoC : public sc_core::sc_module {
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256};
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> local_int_s{"local_int_s", 16};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
+  std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 4> spim_initiator{};
 
   sysc::tgfs::core_complex core_complex{"core_complex"};
   scc::router<> router;
@@ -103,5 +95,3 @@ class PulpissimoSoC : public sc_core::sc_module {
 };
 
 }  // namespace tgc_vp
-
-#endif /* _PLATFORM_H_ */
