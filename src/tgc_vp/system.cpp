@@ -11,7 +11,7 @@ using namespace sc_core;
 using namespace vpvper::sifive;
 using namespace sysc::tgfs;
 
-system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(router, 9, 1) {
+PulpissimoSoC::PulpissimoSoC(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(router, 9, 1) {
   SC_METHOD(resetCb);
   sensitive << erst_n;
 
@@ -67,7 +67,7 @@ system::system(sc_core::sc_module_name nm) : sc_core::sc_module(nm), NAMED(route
   core_complex.local_irq_i(local_int_s);
 }
 
-void system::resetCb() {
+void PulpissimoSoC::resetCb() {
   if (!erst_n.read()) {
     rst_s = true;
   } else {

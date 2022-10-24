@@ -9,6 +9,8 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+// TODO: remove unneeded headers
+
 #include <scc/memory.h>
 #include <scc/router.h>
 #include <scc/utilities.h>
@@ -28,7 +30,7 @@
 #include <array>
 #include <cci_configuration>
 #include <memory>
-//#include <util/sparse_array.h>
+// #include <util/sparse_array.h>
 
 #include "pulpissimo/interrupt.h"
 #include "pulpissimo/soc_ctrl.h"
@@ -57,13 +59,13 @@ class fakeMem : public sc_core::sc_module {
   }
 };
 
-class system : public sc_core::sc_module {
-  SC_HAS_PROCESS(system);
+class PulpissimoSoC : public sc_core::sc_module {
+  SC_HAS_PROCESS(PulpissimoSoC);
 
  public:
   sc_core::sc_in<bool> erst_n{"erst_n"};
 
-  system(sc_core::sc_module_name nm);
+  PulpissimoSoC(sc_core::sc_module_name nm);
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};

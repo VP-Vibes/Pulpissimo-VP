@@ -7,9 +7,9 @@
 #include "tgc_vp/tb.h"
 namespace tgc_vp {
 
-SC_HAS_PROCESS(tb);
-tb::tb(const sc_core::sc_module_name &nm) : sc_core::sc_module(nm) {
+SC_HAS_PROCESS(VP);
+VP::VP(const sc_core::sc_module_name &nm) : sc_core::sc_module(nm) {
   rst_gen.rst_n(rst_n);
-  top.erst_n(rst_n);
+  pulpissimo_soc.erst_n(rst_n);
 }
 }  // namespace tgc_vp
