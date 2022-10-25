@@ -22,6 +22,7 @@
 #include "pulpissimo/soc_event.h"
 #include "pulpissimo/timer.h"
 #include "pulpissimo/udma.h"
+#include "pulpissimo/util.h"
 #include "scc/memory.h"
 #include "scc/router.h"
 #include "scc/utilities.h"
@@ -50,14 +51,8 @@ class fakeMem : public sc_core::sc_module {
   }
 };
 
-class PulpissimoSoC final : public sc_core::sc_module {
+class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   SC_HAS_PROCESS(PulpissimoSoC);
-
-  // public:
-  // class Sockets final {
-  //  public:
-  //    std::array<tlm::tlm_initiator_socket<> *, 4> spim_initiator_sockets{};
-  // };
 
  public:
   sc_core::sc_in<bool> erst_n{"erst_n"};
@@ -67,6 +62,8 @@ class PulpissimoSoC final : public sc_core::sc_module {
   // as no class can inherit from this class hence no need to provide a virtual destructor (even though its provided
   // by default) and no need to suppress copy/move stuff (they are also implictly defaulted)
   // this simplifies as per rule-of-zero
+  //
+  void readMemory(tlm::tlm_generic_payload &, sc_core::sc_time &) override;
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};
@@ -78,12 +75,11 @@ class PulpissimoSoC final : public sc_core::sc_module {
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> local_int_s{"local_int_s", 16};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
 
-  // Sockets sockets{};
   sysc::tgfs::core_complex core_complex{"core_complex"};
   scc::router<> router;
   scc::memory<8_kB, 32> boot_rom{"boot_rom"};
   scc::memory<512_kB, 32> l2_mem{"l2_mem"};
-  vpvper::pulpissimo::udma udma{"udma", &l2_mem,
+  vpvper::pulpissimo::udma udma{"udma", this,
                                 std::array<tlm::tlm_initiator_socket<> *, 4>{
                                     {&spim_sockets[0], &spim_sockets[1], &spim_sockets[2], &spim_sockets[3]}}};
   vpvper::pulpissimo::soc_ctrl soc_ctrl{"soc_control"};

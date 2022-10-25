@@ -13,6 +13,7 @@ SPIDevice::SPIDevice(sc_core::sc_module_name name) : sc_core::sc_module{name} {
 
 void SPIDevice::b_transport(tlm::tlm_generic_payload &gp, sc_core::sc_time &d) {
   //
+  std::cout << "SPIDevice accessed\n";
 }
 
 VP::DummySink::DummySink(sc_core::sc_module_name name) : sc_core::sc_module{name} {
