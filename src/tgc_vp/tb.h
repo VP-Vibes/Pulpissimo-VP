@@ -15,13 +15,33 @@
 #include "tgc_vp/system.h"
 namespace tgc_vp {
 
+class SPIDevice final : public sc_core::sc_module {
+ public:
+  tlm_utils::simple_target_socket<SPIDevice> socket{};
+
+  explicit SPIDevice(sc_core::sc_module_name);
+
+ private:
+  void b_transport(tlm::tlm_generic_payload&, sc_core::sc_time&);
+};
+
 class VP : public sc_core::sc_module {
+  SC_HAS_PROCESS(VP);
+
+ protected:
+  class DummySink final : public sc_core::sc_module {
+   public:
+    tlm_utils::simple_target_socket<DummySink> socket{};
+    explicit DummySink(sc_core::sc_module_name);
+
+   private:
+    void b_transport(tlm::tlm_generic_payload&, sc_core::sc_time&);
+  };
+
  public:
   VP(sc_core::sc_module_name const& nm);
   virtual ~VP() = default;
-  // even though below are not needed but they
-  // (i) make my intent clear that this should not be defined in future to avoid slicing problem
-  // (ii) nice compiler message if copy/move are done
+  // to avoid slicing problems
   VP(const VP&) = delete;
   VP& operator=(const VP&) = delete;
   VP(VP&&) = delete;
@@ -30,9 +50,12 @@ class VP : public sc_core::sc_module {
   // virtual std::unique_ptr<VP> clone() const;
 
  protected:
-  tgc_vp::PulpissimoSoC pulpissimo_soc{"pulpissimo-soc"};
-  tgc_vp::rst_gen rst_gen{"rst_gen"};
-  sc_core::sc_signal<bool> rst_n{"rst_n"};
+  sc_core::sc_signal<bool> rst_n_{"rst_n"};
+
+  tgc_vp::rst_gen rst_gen_{"rst_gen"};
+  tgc_vp::PulpissimoSoC pulpissimo_soc_{"pulpissimo-soc"};
+  SPIDevice spi_device_{"spi-device"};
+  std::array<DummySink, 3> spi_sinks_{{DummySink{"spi-sink-0"}, DummySink{"spi-sink-1"}, DummySink{"spi-sink-2"}}};
 };
 
 } /* namespace tgc_vp */

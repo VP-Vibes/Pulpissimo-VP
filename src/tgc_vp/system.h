@@ -53,10 +53,20 @@ class fakeMem : public sc_core::sc_module {
 class PulpissimoSoC final : public sc_core::sc_module {
   SC_HAS_PROCESS(PulpissimoSoC);
 
+  // public:
+  // class Sockets final {
+  //  public:
+  //    std::array<tlm::tlm_initiator_socket<> *, 4> spim_initiator_sockets{};
+  // };
+
  public:
   sc_core::sc_in<bool> erst_n{"erst_n"};
+  std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 4> spim_sockets{};
 
   PulpissimoSoC(sc_core::sc_module_name nm);
+  // as no class can inherit from this class hence no need to provide a virtual destructor (even though its provided
+  // by default) and no need to suppress copy/move stuff (they are also implictly defaulted)
+  // this simplifies as per rule-of-zero
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};
@@ -67,13 +77,15 @@ class PulpissimoSoC final : public sc_core::sc_module {
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256};
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> local_int_s{"local_int_s", 16};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
-  std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 4> spim_initiator{};
 
+  // Sockets sockets{};
   sysc::tgfs::core_complex core_complex{"core_complex"};
   scc::router<> router;
   scc::memory<8_kB, 32> boot_rom{"boot_rom"};
   scc::memory<512_kB, 32> l2_mem{"l2_mem"};
-  vpvper::pulpissimo::udma udma{"udma", &l2_mem};
+  vpvper::pulpissimo::udma udma{"udma", &l2_mem,
+                                std::array<tlm::tlm_initiator_socket<> *, 4>{
+                                    {&spim_sockets[0], &spim_sockets[1], &spim_sockets[2], &spim_sockets[3]}}};
   vpvper::pulpissimo::soc_ctrl soc_ctrl{"soc_control"};
   vpvper::pulpissimo::interrupt eic{"eic"};
   vpvper::pulpissimo::soc_event soc_event{"soc_event"};
@@ -88,7 +100,6 @@ class PulpissimoSoC final : public sc_core::sc_module {
   // a memory section in 0x0-0x3fff space that in effect just references the L2
   fakeMem fake_mem{&l2_mem};
 
- protected:
   // this method is used to generate inverse reset signal from input reset, to be compatible with rest of SoC
   // peripherals
   void resetCb();
