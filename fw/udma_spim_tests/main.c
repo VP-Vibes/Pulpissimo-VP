@@ -2,10 +2,10 @@
 
 #include "rt/rt_api.h"
 
+// this is the pulp-rt-examples in pulp-platform
 // receive data from external device using uDMA via SPIM the transfer takes place synchronously i.e. the CPU execution
 // is blocked till this function returns
 int testReceiveSync() {
-  // this is the pulp-rt-examples in pulp-platform
   int buffer_size = 16;
 
   rt_spim_conf_t conf;
@@ -20,7 +20,6 @@ int testReceiveSync() {
     return -1;
   }
 
-
   // allocate a buffer in L2-mem for receiving 16B of data
   char *rx_buffer = rt_alloc(RT_ALLOC_PERIPH, buffer_size);
   if (rx_buffer == NULL) {
@@ -31,24 +30,17 @@ int testReceiveSync() {
   // this will block until the whole transfer is done
   rt_spim_receive(spim, rx_buffer, buffer_size * 8, RT_SPIM_CS_AUTO, NULL);
 
-
   return 0;
 }
 
 // receive data from external device using uDMA via SPIM the transfer takes place asynchronously i.e. the CPU execution
 // is not blocked till this function returns the CPU can do other stuff till an interrupt is received for end of
 // transfer by uDMA
-int testReceiveAsync() {
-  return 0;
-}
+int testReceiveAsync() { return 0; }
 
-int testTransmitSync() {
-  return 0;
-}
+int testTransmitSync() { return 0; }
 
-int testTransmitAsync() {
-  return 0;
-}
+int testTransmitAsync() { return 0; }
 
 int main() {
   int status1 = testReceiveSync();
