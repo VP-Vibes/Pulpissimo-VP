@@ -79,4 +79,12 @@ void PulpissimoSoC::resetCb() {
   }
 }
 
+void PulpissimoSoC::connectSPIMSocket(size_t id, tlm::tlm_target_socket<> &target_socket) {
+  sockets_.spim_initiators[id].bind(target_socket);
+}
+
+void PulpissimoSoC::transmitSPIMSocket(size_t id, tlm::tlm_generic_payload &gp, sc_core::sc_time &delay) {
+  sockets_.spim_initiators[id]->b_transport(gp, delay);
+}
+
 }  // namespace tgc_vp
