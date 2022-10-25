@@ -55,15 +55,23 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   SC_HAS_PROCESS(PulpissimoSoC);
 
  public:
+  class Sockets {
+   public:
+    std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 4> spim_initiators{};
+  };
+
+ public:
   sc_core::sc_in<bool> erst_n{"erst_n"};
-  std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 4> spim_sockets{};
 
   PulpissimoSoC(sc_core::sc_module_name nm);
   // as no class can inherit from this class hence no need to provide a virtual destructor (even though its provided
   // by default) and no need to suppress copy/move stuff (they are also implictly defaulted)
   // this simplifies as per rule-of-zero
   //
+  // TODO: maybe use const on target-socket arg
+  void connectSPIMSocket(size_t, tlm::tlm_target_socket<> &);
   void readMemory(tlm::tlm_generic_payload &, sc_core::sc_time &) override;
+  void transmitSPIMSocket(size_t, tlm::tlm_generic_payload &, sc_core::sc_time &) override;
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};
@@ -74,14 +82,13 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256};
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> local_int_s{"local_int_s", 16};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
+  Sockets sockets_{};
 
   sysc::tgfs::core_complex core_complex{"core_complex"};
   scc::router<> router;
   scc::memory<8_kB, 32> boot_rom{"boot_rom"};
   scc::memory<512_kB, 32> l2_mem{"l2_mem"};
-  vpvper::pulpissimo::udma udma{"udma", this,
-                                std::array<tlm::tlm_initiator_socket<> *, 4>{
-                                    {&spim_sockets[0], &spim_sockets[1], &spim_sockets[2], &spim_sockets[3]}}};
+  vpvper::pulpissimo::udma udma{"udma", this};
   vpvper::pulpissimo::soc_ctrl soc_ctrl{"soc_control"};
   vpvper::pulpissimo::interrupt eic{"eic"};
   vpvper::pulpissimo::soc_event soc_event{"soc_event"};

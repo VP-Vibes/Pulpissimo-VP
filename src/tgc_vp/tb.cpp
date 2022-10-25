@@ -29,10 +29,10 @@ VP::VP(const sc_core::sc_module_name &nm) : sc_core::sc_module(nm) {
   rst_gen_.rst_n(rst_n_);
   pulpissimo_soc_.erst_n(rst_n_);
 
-  pulpissimo_soc_.spim_sockets[1].bind(spi_device_.socket);
+  pulpissimo_soc_.connectSPIMSocket(1, spi_device_.socket);
 
-  pulpissimo_soc_.spim_sockets[0].bind(spi_sinks_[0].socket);
-  pulpissimo_soc_.spim_sockets[2].bind(spi_sinks_[1].socket);
-  pulpissimo_soc_.spim_sockets[3].bind(spi_sinks_[2].socket);
+  pulpissimo_soc_.connectSPIMSocket(0, spi_sinks_[0].socket);
+  pulpissimo_soc_.connectSPIMSocket(2, spi_sinks_[1].socket);
+  pulpissimo_soc_.connectSPIMSocket(3, spi_sinks_[2].socket);
 }
 }  // namespace tgc_vp
