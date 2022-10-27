@@ -70,8 +70,9 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   //
   // TODO: maybe use const on target-socket arg
   void connectSPIMSocket(size_t, tlm::tlm_target_socket<> &);
-  void readMemory(tlm::tlm_generic_payload &, sc_core::sc_time &) override;
   void transmitSPIMSocket(size_t, tlm::tlm_generic_payload &, sc_core::sc_time &) override;
+  void readMemory(unsigned char *, uint32_t, size_t) override;
+  void writeMemory(unsigned char *, uint32_t, size_t) override;
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};

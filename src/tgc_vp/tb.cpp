@@ -12,8 +12,20 @@ SPIDevice::SPIDevice(sc_core::sc_module_name name) : sc_core::sc_module{name} {
 }
 
 void SPIDevice::b_transport(tlm::tlm_generic_payload &gp, sc_core::sc_time &d) {
-  //
-  std::cout << "SPIDevice accessed\n";
+  static unsigned char data{0};
+
+  auto cmd{gp.get_command()};
+  if (cmd == tlm::TLM_READ_COMMAND) {
+    for (int i = 0; i < gp.get_data_length(); ++i) {
+      gp.get_data_ptr()[i] = data;
+      data++;
+    }
+  } else if (cmd == tlm::TLM_WRITE_COMMAND) {
+    std::cerr << "[spi-device] TODO";
+    exit(1);
+  }
+
+  gp.set_response_status(tlm::TLM_OK_RESPONSE);
 }
 
 VP::DummySink::DummySink(sc_core::sc_module_name name) : sc_core::sc_module{name} {
