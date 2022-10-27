@@ -67,15 +67,41 @@ PulpissimoSoC::PulpissimoSoC(sc_core::sc_module_name nm) : vpvper::pulpissimo::S
   core_complex.local_irq_i(local_int_s);
 }
 
-void PulpissimoSoC::readMemory(tlm::tlm_generic_payload &gp, sc_core::sc_time &delay) {
-  l2_mem.handle_operation(gp, delay);
-}
-
 void PulpissimoSoC::resetCb() {
   if (!erst_n.read()) {
     rst_s = true;
   } else {
     rst_s = false;
+  }
+}
+
+void PulpissimoSoC::readMemory(unsigned char *data, uint32_t addr, size_t len) {
+  sc_core::sc_time delay{sc_core::SC_ZERO_TIME};
+  tlm::tlm_generic_payload gp{};
+  gp.set_command(tlm::TLM_READ_COMMAND);
+  gp.set_address(addr);
+  gp.set_data_ptr(data);
+  gp.set_data_length(len);
+  gp.set_streaming_width(len);
+
+  l2_mem.handle_operation(gp, delay);
+  if (gp.get_response_status() != tlm::TLM_OK_RESPONSE) {
+    std::cerr << "[pulpissimo] memory not read properly";
+  }
+}
+
+void PulpissimoSoC::writeMemory(unsigned char *data, uint32_t addr, size_t len) {
+  sc_core::sc_time delay{sc_core::SC_ZERO_TIME};
+  tlm::tlm_generic_payload gp{};
+  gp.set_command(tlm::TLM_WRITE_COMMAND);
+  gp.set_address(addr);
+  gp.set_data_ptr(data);
+  gp.set_data_length(len);
+  gp.set_streaming_width(len);
+
+  l2_mem.handle_operation(gp, delay);
+  if (gp.get_response_status() != tlm::TLM_OK_RESPONSE) {
+    std::cerr << "[pulpissimo] memory not written properly";
   }
 }
 
