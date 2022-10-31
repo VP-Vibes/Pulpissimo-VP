@@ -109,8 +109,12 @@ int sc_main(int argc, char *argv[]) {
     if (parser.is_set("max_time")) {
       sc_core::sc_start(scc::parse_from_string(parser.get<std::string>("max_time")));
     } else
-      sc_core::sc_start();
-    if (!sc_core::sc_end_of_simulation_invoked()) sc_core::sc_stop();
+      //   sc_core::sc_start();
+      // if (!sc_core::sc_end_of_simulation_invoked()) sc_core::sc_stop();
+
+      // because in our simulations we can have threads suspended (e.g. waiting for interrupt) so right now
+      // we run simulation upto certain time
+      sc_core::sc_start(sc_core::sc_time{1, sc_core::SC_SEC});
   } catch (sc_core::sc_report &rep) {
     sc_core::sc_report_handler::get_handler()(rep, sc_core::SC_DISPLAY | sc_core::SC_STOP);
   }

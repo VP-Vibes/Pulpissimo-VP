@@ -113,4 +113,6 @@ void PulpissimoSoC::transmitSPIMSocket(size_t id, tlm::tlm_generic_payload &gp, 
   sockets_.spim_initiators[id]->b_transport(gp, delay);
 }
 
+void PulpissimoSoC::setEvent(size_t id) { soc_event.push(id); }
+
 }  // namespace tgc_vp
