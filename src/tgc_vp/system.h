@@ -17,19 +17,21 @@
 #include "tlm_utils/simple_target_socket.h"
 //
 
+#include "scc/memory.h"
+#include "scc/router.h"
+#include "scc/utilities.h"
+//
+#include "sifive/prci.h"
+#include "sysc/core_complex.h"
+#include "sysc/kernel/sc_module.h"
+#include "tlm/scc/tlm_signal_sockets.h"
+//
 #include "pulpissimo/interrupt.h"
 #include "pulpissimo/soc_ctrl.h"
 #include "pulpissimo/soc_event.h"
 #include "pulpissimo/timer.h"
 #include "pulpissimo/udma.h"
 #include "pulpissimo/util.h"
-#include "scc/memory.h"
-#include "scc/router.h"
-#include "scc/utilities.h"
-#include "sifive/prci.h"
-#include "sysc/core_complex.h"
-#include "sysc/kernel/sc_module.h"
-#include "tlm/scc/tlm_signal_sockets.h"
 
 namespace tgc_vp {
 
@@ -73,6 +75,7 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   void transmitSPIMSocket(size_t, tlm::tlm_generic_payload &, sc_core::sc_time &) override;
   void readMemory(unsigned char *, uint32_t, size_t) override;
   void writeMemory(unsigned char *, uint32_t, size_t) override;
+  void setEvent(size_t) override;
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};
