@@ -223,8 +223,7 @@ static inline __attribute__((always_inline)) unsigned int hal_is_fc() {
   return 0;
 #else
   if (hal_has_fc())
-//	return hal_cluster_id() == ARCHI_FC_CID;
-    return 1;
+	return hal_cluster_id() == ARCHI_FC_CID;
   else
 	return 0;
 #endif
