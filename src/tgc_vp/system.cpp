@@ -14,7 +14,9 @@ using namespace sysc::tgfs;
 PulpissimoSoC::PulpissimoSoC(sc_core::sc_module_name nm) : vpvper::pulpissimo::SoC{nm}, NAMED(router, 9, 1) {
   SC_METHOD(resetCb);
   sensitive << erst_n;
+  SC_THREAD(raiseCoreInterrupt);
 
+  core_complex.mhartid = 992;
   core_complex.initiator(router.target[0]);
 
   size_t i = 0;
@@ -114,5 +116,18 @@ void PulpissimoSoC::transmitSPIMSocket(size_t id, tlm::tlm_generic_payload &gp, 
 }
 
 void PulpissimoSoC::setEvent(size_t id) { soc_event.push(id); }
+
+void PulpissimoSoC::raiseInterrupt(size_t id) {
+  // eic.push(id);
+
+  raise_core_irq_.notify();
+}
+
+void PulpissimoSoC::raiseCoreInterrupt() {
+  while (1) {
+    wait(raise_core_irq_);
+    core_int_s.write(true);
+  }
+}
 
 }  // namespace tgc_vp

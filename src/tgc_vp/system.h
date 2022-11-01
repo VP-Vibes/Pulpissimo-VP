@@ -76,16 +76,19 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   void readMemory(unsigned char *, uint32_t, size_t) override;
   void writeMemory(unsigned char *, uint32_t, size_t) override;
   void setEvent(size_t) override;
+  void raiseInterrupt(size_t) override;
 
  private:
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> tlclk_s{"tlclk_s"};
   sc_core::sc_signal<sc_core::sc_time, sc_core::SC_MANY_WRITERS> lfclk_s{"lfclk_s"};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> rst_s{"rst_s"};
+
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> mtime_int_s{"mtime_int_s"};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> msie_int_s{"msie_int_s"};
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> global_int_s{"global_int_s", 256};
   sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> local_int_s{"local_int_s", 16};
   sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> core_int_s{"core_int_s"};
+
   Sockets sockets_{};
 
   sysc::tgfs::core_complex core_complex{"core_complex"};
@@ -95,7 +98,7 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   vpvper::pulpissimo::udma udma{"udma", this};
   vpvper::pulpissimo::soc_ctrl soc_ctrl{"soc_control"};
   vpvper::pulpissimo::interrupt eic{"eic"};
-  vpvper::pulpissimo::soc_event soc_event{"soc_event"};
+  vpvper::pulpissimo::soc_event soc_event{"soc_event", this};
   vpvper::pulpissimo::timer timer{"timer"};
 
   // TODO: later make this FLL
@@ -106,10 +109,12 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   // as our VP loads up the memory module using info from elf so we fake
   // a memory section in 0x0-0x3fff space that in effect just references the L2
   fakeMem fake_mem{&l2_mem};
+  sc_core::sc_event raise_core_irq_{};
 
   // this method is used to generate inverse reset signal from input reset, to be compatible with rest of SoC
   // peripherals
   void resetCb();
+  void raiseCoreInterrupt();
 };
 
 }  // namespace tgc_vp
