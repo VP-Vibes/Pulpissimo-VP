@@ -85,6 +85,8 @@ void process_audio_samples() {
       current_buffer = buffA;
       eventB = rt_event_get_blocking(NULL);
     }
+
+    break;
   }
 }
 
