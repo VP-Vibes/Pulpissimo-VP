@@ -30,6 +30,10 @@ int testReceiveSync() {
   // this will block until the whole transfer is done
   rt_spim_receive(spim, rx_buffer, buffer_size * 8, RT_SPIM_CS_AUTO, NULL);
 
+  for (int i = 0; i < buffer_size; ++i) {
+    *(volatile int *)(0x1a104074) = (int)rx_buffer[i];
+  }
+
   return 0;
 }
 

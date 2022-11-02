@@ -16,13 +16,13 @@
 
 
 
-# # if you want to compile fw
-# cd fw/udma_spim_tests/
-# make clean
-# mkdir -p build/obj/
-# make
-# /opt/riscv/bin/riscv32-unknown-elf-objdump -d build/test > build/test.dump
-# cd ../../
+# if you want to compile fw
+cd fw/udma_spim_tests/
+make clean
+mkdir -p build/obj/
+make
+/opt/riscv/bin/riscv32-unknown-elf-objdump -d build/test > build/test.dump
+cd ../../
 
 
 
