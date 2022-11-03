@@ -83,5 +83,13 @@ int main() {
   int status3 = testTransmitSync();
   // int status4 = testTransmitAsync();
 
+  // if (status1 == 0) {
+  //   *(volatile int *)(0x1a104074) = 0x45;
+  // }
+
+  if (status3 == 0) {
+    *(volatile int *)(0x1a104074) = 0x99;
+  }
+
   return 0;
 }
