@@ -21,8 +21,9 @@ void SPIDevice::b_transport(tlm::tlm_generic_payload &gp, sc_core::sc_time &d) {
       data++;
     }
   } else if (cmd == tlm::TLM_WRITE_COMMAND) {
-    std::cerr << "[spi-device] TODO";
-    exit(1);
+    for (int i = 0; i < gp.get_data_length(); ++i) {
+      std::cout << "[external spi device] data = " << static_cast<uint32_t>(gp.get_data_ptr()[i]) << "\n";
+    }
   }
 
   gp.set_response_status(tlm::TLM_OK_RESPONSE);
