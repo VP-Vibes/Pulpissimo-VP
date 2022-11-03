@@ -127,6 +127,11 @@ void PulpissimoSoC::raiseCoreInterrupt() {
   while (1) {
     wait(raise_core_irq_);
     core_int_s.write(true);
+    // we raise it high for >= cycle
+    // currently the TGC core is running at 70 MHz though I am not sure if Pulpissimo demands a fixed
+    // operating frequency on its CPU core
+    wait(15, SC_NS);
+    core_int_s.write(false);
   }
 }
 
