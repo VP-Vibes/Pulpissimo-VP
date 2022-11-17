@@ -1,5 +1,9 @@
 #!/bin/sh
 
+export RISCV=/opt/riscv/
+export PULP_CC=$RISCV/bin/riscv32-unknown-elf-gcc
+export PULP_SDK_HOME=/Pulpissimo-VP/fw/custom-pulp-sdk-master/
+
 # # if you want to compile vp
 # mkdir -p build/
 # cp conan.cmake build/.
@@ -16,13 +20,13 @@
 
 
 
-# if you want to compile fw
-cd fw/udma_spim_tests/
-make clean
-mkdir -p build/obj/
-make
-/opt/riscv/bin/riscv32-unknown-elf-objdump -d build/test > build/test.dump
-cd ../../
+# # if you want to compile fw
+# cd fw/udma_spim_tests/
+# make clean
+# mkdir -p build/obj/
+# make
+# /opt/riscv/bin/riscv32-unknown-elf-objdump -d build/test > build/test.dump
+# cd ../../
 
 
 
