@@ -68,6 +68,8 @@ void process_audio_samples() {
     // prepare buffer for next capture
     rt_i2s_capture(i2s, current_buffer, BUFF_SIZE, current_event);
 
+    return;
+
     // some computation with printf
     // PRINT(h_uart, "Start computation\n");
 
@@ -85,8 +87,6 @@ void process_audio_samples() {
       current_buffer = buffA;
       eventB = rt_event_get_blocking(NULL);
     }
-
-    break;
   }
 }
 
@@ -97,7 +97,8 @@ int main(void) {
   __rt_freq_set_value(RT_FREQ_DOMAIN_PERIPH, 100000000);
 
   return_value = init_i2s();
-  process_audio_samples();
+
+  // process_audio_samples();
   // close_i2s();
   // return_value = 0;
   // rt_uart_close(h_uart, NULL);

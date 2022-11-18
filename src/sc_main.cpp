@@ -114,7 +114,8 @@ int sc_main(int argc, char *argv[]) {
 
       // because in our simulations we can have threads suspended (e.g. waiting for interrupt) so right now
       // we run simulation upto certain time
-      sc_core::sc_start(sc_core::sc_time{1, sc_core::SC_SEC});
+      // sc_core::sc_start(sc_core::sc_time{1, sc_core::SC_SEC});
+      sc_core::sc_start(sc_core::sc_time{35, sc_core::SC_US});
   } catch (sc_core::sc_report &rep) {
     sc_core::sc_report_handler::get_handler()(rep, sc_core::SC_DISPLAY | sc_core::SC_STOP);
   }
