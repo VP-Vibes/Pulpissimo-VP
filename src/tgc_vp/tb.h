@@ -55,7 +55,7 @@ class VP : public sc_core::sc_module {
   tgc_vp::rst_gen rst_gen_{"rst_gen"};
   tgc_vp::PulpissimoSoC pulpissimo_soc_{"pulpissimo-soc"};
   SPIDevice spi_device_{"spi-device"};
-  std::array<DummySink, 3> spi_sinks_{{DummySink{"spi-sink-0"}, DummySink{"spi-sink-1"}, DummySink{"spi-sink-2"}}};
+  DummySink spi_sink_{"spi-sink-0"};
 };
 
 } /* namespace tgc_vp */
