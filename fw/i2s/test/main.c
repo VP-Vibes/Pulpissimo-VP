@@ -21,6 +21,8 @@ int main() {
   i2s_conf.dual = 0;
   i2s_conf.width = 16;
   i2s_conf.id = 0;
+
+  // TODO: currently only working with PDM = 0!!
   i2s_conf.pdm = 0;
 
   rt_i2s_t *i2s = rt_i2s_open(NULL, &i2s_conf, NULL);

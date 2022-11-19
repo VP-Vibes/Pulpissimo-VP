@@ -43,9 +43,6 @@ VP::VP(const sc_core::sc_module_name &nm) : sc_core::sc_module(nm) {
   pulpissimo_soc_.erst_n(rst_n_);
 
   pulpissimo_soc_.connectSPIMSocket(1, spi_device_.socket);
-
-  pulpissimo_soc_.connectSPIMSocket(0, spi_sinks_[0].socket);
-  pulpissimo_soc_.connectSPIMSocket(2, spi_sinks_[1].socket);
-  pulpissimo_soc_.connectSPIMSocket(3, spi_sinks_[2].socket);
+  pulpissimo_soc_.connectSPIMSocket(0, spi_sink_.socket);
 }
 }  // namespace tgc_vp

@@ -59,7 +59,7 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
  public:
   class Sockets {
    public:
-    std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 4> spim_initiators{};
+    std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 2> spim_initiators{};
   };
 
  public:
