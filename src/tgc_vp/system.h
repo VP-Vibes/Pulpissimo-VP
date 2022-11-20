@@ -75,6 +75,7 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   void connectSPIMSocket(size_t, tlm::tlm_target_socket<> &);
   void connectI2SSocket(size_t, tlm::tlm_target_socket<> &);
   void transmitSPIMSocket(size_t, tlm::tlm_generic_payload &, sc_core::sc_time &) override;
+  void transmitI2SSocket(size_t, tlm::tlm_generic_payload &, sc_core::sc_time &) override;
   void readMemory(unsigned char *, uint32_t, size_t) override;
   void writeMemory(unsigned char *, uint32_t, size_t) override;
   void setEvent(size_t) override;

@@ -21,12 +21,20 @@ int main() {
   i2s_conf.dual = 0;
   i2s_conf.width = 16;
   i2s_conf.id = 0;
-  i2s_conf.pdm = 1;
+  // TODO: so far only works with PDM disabled!!
+  i2s_conf.pdm = 0;
 
   rt_i2s_t *i2s = rt_i2s_open(NULL, &i2s_conf, NULL);
   if (i2s == NULL) {
     return -1;
   }
+
+  rt_event_t *event = rt_event_get_blocking(NULL);
+  rt_i2s_capture(i2s, buff, BUFF_SIZE, event);
+  rt_i2s_start(i2s);
+  rt_event_wait(event);
+  rt_i2s_stop(i2s);
+  rt_i2s_close(i2s, NULL);
 
   // to indicate to simulator environment that program finished successfully
 #ifdef NOTIFY_SIMULATOR

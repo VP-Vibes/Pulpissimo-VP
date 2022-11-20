@@ -34,8 +34,17 @@ AudioDevice::AudioDevice(sc_core::sc_module_name name) : sc_core::sc_module{name
 }
 
 void AudioDevice::b_transport(tlm::tlm_generic_payload &gp, sc_core::sc_time &d) {
-  std::cout << "[audio device] got here\n";
-  exit(1);
+  static unsigned char data{0};
+
+  auto cmd{gp.get_command()};
+  if (cmd == tlm::TLM_READ_COMMAND) {
+    for (int i = 0; i < gp.get_data_length(); ++i) {
+      gp.get_data_ptr()[i] = data;
+      data += 2;
+    }
+  }
+
+  gp.set_response_status(tlm::TLM_OK_RESPONSE);
 }
 
 VP::DummySink::DummySink(sc_core::sc_module_name name) : sc_core::sc_module{name} {
@@ -54,7 +63,7 @@ VP::VP(const sc_core::sc_module_name &nm) : sc_core::sc_module(nm) {
   pulpissimo_soc_.connectSPIMSocket(1, spi_device_.socket);
   pulpissimo_soc_.connectSPIMSocket(0, spi_sink_.socket);
 
-  pulpissimo_soc_.connectI2SSocket(1, audio_device_.socket);
-  pulpissimo_soc_.connectI2SSocket(0, i2s_sink_.socket);
+  pulpissimo_soc_.connectI2SSocket(0, audio_device_.socket);
+  pulpissimo_soc_.connectI2SSocket(1, i2s_sink_.socket);
 }
 }  // namespace tgc_vp
