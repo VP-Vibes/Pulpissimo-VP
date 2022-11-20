@@ -119,6 +119,10 @@ void PulpissimoSoC::transmitSPIMSocket(size_t id, tlm::tlm_generic_payload &gp, 
   sockets_.spim_initiators[id]->b_transport(gp, delay);
 }
 
+void PulpissimoSoC::transmitI2SSocket(size_t id, tlm::tlm_generic_payload &gp, sc_core::sc_time &delay) {
+  sockets_.i2s_initiators[id]->b_transport(gp, delay);
+}
+
 void PulpissimoSoC::setEvent(size_t id) { soc_event.push(id); }
 
 void PulpissimoSoC::raiseInterrupt(size_t id) {
