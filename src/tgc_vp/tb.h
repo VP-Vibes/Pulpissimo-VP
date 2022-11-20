@@ -25,6 +25,16 @@ class SPIDevice final : public sc_core::sc_module {
   void b_transport(tlm::tlm_generic_payload&, sc_core::sc_time&);
 };
 
+class AudioDevice final : public sc_core::sc_module {
+ public:
+  tlm_utils::simple_target_socket<AudioDevice> socket{};
+
+  explicit AudioDevice(sc_core::sc_module_name);
+
+ private:
+  void b_transport(tlm::tlm_generic_payload&, sc_core::sc_time&);
+};
+
 class VP : public sc_core::sc_module {
   SC_HAS_PROCESS(VP);
 
@@ -56,6 +66,9 @@ class VP : public sc_core::sc_module {
   tgc_vp::PulpissimoSoC pulpissimo_soc_{"pulpissimo-soc"};
   SPIDevice spi_device_{"spi-device"};
   DummySink spi_sink_{"spi-sink-0"};
+  // to be connected via i2s interface
+  AudioDevice audio_device_{"audio-device"};
+  DummySink i2s_sink_{"i2s-sink-0"};
 };
 
 } /* namespace tgc_vp */

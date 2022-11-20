@@ -111,6 +111,10 @@ void PulpissimoSoC::connectSPIMSocket(size_t id, tlm::tlm_target_socket<> &targe
   sockets_.spim_initiators[id].bind(target_socket);
 }
 
+void PulpissimoSoC::connectI2SSocket(size_t id, tlm::tlm_target_socket<> &target_socket) {
+  sockets_.i2s_initiators[id].bind(target_socket);
+}
+
 void PulpissimoSoC::transmitSPIMSocket(size_t id, tlm::tlm_generic_payload &gp, sc_core::sc_time &delay) {
   sockets_.spim_initiators[id]->b_transport(gp, delay);
 }

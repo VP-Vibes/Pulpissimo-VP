@@ -60,6 +60,7 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   class Sockets {
    public:
     std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 2> spim_initiators{};
+    std::array<tlm_utils::simple_initiator_socket<PulpissimoSoC>, 2> i2s_initiators{};
   };
 
  public:
@@ -72,6 +73,7 @@ class PulpissimoSoC final : public vpvper::pulpissimo::SoC {
   //
   // TODO: maybe use const on target-socket arg
   void connectSPIMSocket(size_t, tlm::tlm_target_socket<> &);
+  void connectI2SSocket(size_t, tlm::tlm_target_socket<> &);
   void transmitSPIMSocket(size_t, tlm::tlm_generic_payload &, sc_core::sc_time &) override;
   void readMemory(unsigned char *, uint32_t, size_t) override;
   void writeMemory(unsigned char *, uint32_t, size_t) override;
