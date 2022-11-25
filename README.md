@@ -71,10 +71,6 @@ To rebuild the firmware you need to install a RISC-V toolchain like https://gith
 # Windows/Visual Studio build
 TODO
 
-# Notes
-Well we try to be as close to Pulpissimo semantics but there are some inaccuracies e.g. as instead of RI5CY core,
-we use TGC core (RV32IMC) from Minres. Especially interrupt handling is quite different.
-
 # TODO
 - [ ] uDMA configuration regs 
 - [ ] clean up TGC-VP stuff (models, target-SW)
