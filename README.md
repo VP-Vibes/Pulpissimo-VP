@@ -72,8 +72,10 @@ To rebuild the firmware you need to install a RISC-V toolchain like https://gith
 TODO
 
 # TODO
-- [ ] uDMA configuration regs 
-- [ ] clean up TGC-VP stuff (models, target-SW)
-- [ ] SPI-M model in UDMA subsystem
-- [ ] I2S model in UDMA subsystem
+- [x] uDMA configuration regs 
+- [x] clean up TGC-VP stuff (models, target-SW)
+- [x] SPI-M model in UDMA subsystem
+- [x] I2S model in UDMA subsystem
 - [ ] use VPVibes::vpvper as submodule
+- [ ] rest of SoC peripherals and support
+- [ ] testing via FreeRTOS apps
