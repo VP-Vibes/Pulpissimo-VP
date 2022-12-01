@@ -77,5 +77,7 @@ TODO
 - [x] SPI-M model in UDMA subsystem
 - [x] I2S model in UDMA subsystem
 - [ ] use VPVibes::vpvper as submodule
+- [ ] upgrade minres submodules like scc, dbt-rise-core, dbt-rise-tgc 
+- [ ] is there something useful to merge from Trax-VP (private minres space)?
 - [ ] rest of SoC peripherals and support
 - [ ] testing via FreeRTOS apps
