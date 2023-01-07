@@ -76,6 +76,9 @@ TODO
 - [x] clean up TGC-VP stuff (models, target-SW)
 - [x] SPI-M model in UDMA subsystem
 - [x] I2S model in UDMA subsystem
+- [ ] modification in generated source -> RDL files
+- [ ] merge to main/master
+
 - [ ] use VPVibes::vpvper as submodule
 - [ ] upgrade minres submodules like scc, dbt-rise-core, dbt-rise-tgc 
 - [ ] is there something useful to merge from Trax-VP (private minres space)?
