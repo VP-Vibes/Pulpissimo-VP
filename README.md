@@ -84,3 +84,5 @@ TODO
 - [ ] is there something useful to merge from Trax-VP (private minres space)?
 - [ ] rest of SoC peripherals and support
 - [ ] testing via FreeRTOS apps
+
+- [ ] report issue with standalone RDL generator that includes duplicated headers (i2c_channel.h for UDMA)
