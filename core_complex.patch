@@ -1,0 +1,37 @@
+--- /tmp/core_complex.cpp	2023-01-08 18:07:04.420627177 +0100
++++ tgc-iss/dbt-rise-tgc/src/sysc/core_complex.cpp	2023-01-08 17:58:01.486299768 +0100
+@@ -177,6 +177,9 @@
+         SCCDEBUG(owner->name()) << "Sleeping until interrupt";
+         do {
+             sc_core::wait(wfi_evt);
++
++            // WFI can be handled even without interrupts hence pending-trap not imp in this context
++            break;
+         } while (this->reg.pending_trap == 0);
+         PLAT::wait_until(flags);
+     }
+@@ -499,6 +502,11 @@
+ }
+ 
+ bool core_complex::read_mem(uint64_t addr, unsigned length, uint8_t *const data, bool is_fetch) {
++    // the udma::interrupt module uses mirroring scheme so realigning addr request from fw here
++    if (addr >= 0x1a109800 && addr <= 0x1a109824) {
++        addr -= 0x800;
++    }
++
+     auto lut_entry = read_lut.getEntry(addr);
+     if (lut_entry.get_granted_access() != tlm::tlm_dmi::DMI_ACCESS_NONE &&
+         addr + length <= lut_entry.get_end_address() + 1) {
+@@ -544,6 +552,12 @@
+ }
+ 
+ bool core_complex::write_mem(uint64_t addr, unsigned length, const uint8_t *const data) {
++    // the udma::interrupt module uses mirroring scheme so realigning addr request from fw here
++    if (addr >= 0x1a109800 && addr <= 0x1a109824) {
++        addr -= 0x800;
++    }
++
++
+     auto lut_entry = write_lut.getEntry(addr);
+     if (lut_entry.get_granted_access() != tlm::tlm_dmi::DMI_ACCESS_NONE &&
+         addr + length <= lut_entry.get_end_address() + 1) {

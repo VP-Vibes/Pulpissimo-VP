@@ -43,10 +43,14 @@ Initially this is forked from TGC-VP project in VP-Vibes.
   ```
 
   cd Pulpissimo-VP/
-  mkdir build
-  cd build
-  cmake -DCMAKE_BUILD_TYPE=Release ..
-  make -j tgc-vp
+  
+  # for Pulpissimo-VP simulation specific changes to `dbt-rise-tgc` submodule, we have to apply a patch
+  cd tgc-iss/dbt-rise-tgc/src/sysc/
+  patch < /Pulpissimo-VP/core_complex.patch
+
+  # now we can build VP
+  cmake -B build/ -S . -DCMAKE_BUILD_TYPE=Release
+  cmake --build build/ --target tgc-vp -- -j4
 
   ```
   
@@ -62,7 +66,7 @@ Initially this is forked from TGC-VP project in VP-Vibes.
 
   ```
 
-  src/tgc-vp -f ../fw/hello-world/prebuilt/hello.elf 
+  build/src/tgc-vp -f ../fw/hello-world/prebuilt/hello.elf 
 
   ```
   
@@ -76,17 +80,17 @@ TODO
 - [x] clean up TGC-VP stuff (models, target-SW)
 - [x] SPI-M model in UDMA subsystem
 - [x] I2S model in UDMA subsystem
-
-- [ ] modification in generated source -> RDL files
-- [ ] merge to main/master
-- [ ] core-complex patch (i. break in wfi_evt ii. redirect udma::interrupt peripheral mapped calls)
-
-- [ ] use VPVibes::vpvper as submodule
-- [ ] upgrade minres submodules like scc, dbt-rise-core, dbt-rise-tgc 
-- [ ] is there something useful to merge from Trax-VP (private minres space)?
-- [ ] rest of SoC peripherals and support
-- [ ] testing via FreeRTOS apps
-
 - [x] report issue with standalone RDL generator that includes duplicated headers (i2c_channel.h for UDMA)
       default values? read/write masks?
       trailing #endif?
+- [x] modification in generated source -> RDL files
+- [x] merge to main/master
+- [x] core-complex patch (i. break in wfi_evt ii. redirect udma::interrupt peripheral mapped calls)
+
+
+
+- [ ] use VPVibes::vpvper as submodule
+- [ ] rest of SoC peripherals and support
+- [ ] testing via FreeRTOS apps
+
+- [ ] is there something useful to merge from Trax-VP (private minres space)?
