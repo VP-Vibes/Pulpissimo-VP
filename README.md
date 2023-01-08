@@ -47,6 +47,7 @@ Initially this is forked from TGC-VP project in VP-Vibes.
   # for Pulpissimo-VP simulation specific changes to `dbt-rise-tgc` submodule, we have to apply a patch
   cd tgc-iss/dbt-rise-tgc/src/sysc/
   patch < /Pulpissimo-VP/core_complex.patch
+  cd ../../../../
 
   # now we can build VP
   cmake -B build/ -S . -DCMAKE_BUILD_TYPE=Release
