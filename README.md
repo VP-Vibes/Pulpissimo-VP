@@ -56,21 +56,8 @@ Initially this is forked from TGC-VP project in VP-Vibes.
   ```
   
 * run the VP with pre-built firmware
+[TODO]
 
-  ```
-
-  ctest
-
-  ```
-
-  or
-
-  ```
-
-  build/src/tgc-vp -f ../fw/hello-world/prebuilt/hello.elf 
-
-  ```
-  
 To rebuild the firmware you need to install a RISC-V toolchain like https://github.com/riscv/riscv-tools.
 
 # Windows/Visual Studio build
