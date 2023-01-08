@@ -76,8 +76,10 @@ TODO
 - [x] clean up TGC-VP stuff (models, target-SW)
 - [x] SPI-M model in UDMA subsystem
 - [x] I2S model in UDMA subsystem
+
 - [ ] modification in generated source -> RDL files
 - [ ] merge to main/master
+- [ ] core-complex patch (i. break in wfi_evt ii. redirect udma::interrupt peripheral mapped calls)
 
 - [ ] use VPVibes::vpvper as submodule
 - [ ] upgrade minres submodules like scc, dbt-rise-core, dbt-rise-tgc 
@@ -85,4 +87,6 @@ TODO
 - [ ] rest of SoC peripherals and support
 - [ ] testing via FreeRTOS apps
 
-- [ ] report issue with standalone RDL generator that includes duplicated headers (i2c_channel.h for UDMA)
+- [x] report issue with standalone RDL generator that includes duplicated headers (i2c_channel.h for UDMA)
+      default values? read/write masks?
+      trailing #endif?
