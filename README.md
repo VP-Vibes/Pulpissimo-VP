@@ -10,7 +10,7 @@ Initially this is forked from TGC-VP project in VP-Vibes.
   
   ```
 
-  pip3 install --user conan
+  pip3 install --user conan==1.59.0
 
   ```
   
